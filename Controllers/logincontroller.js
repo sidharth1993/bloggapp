@@ -1,16 +1,16 @@
 const jwt = require('jsonwebtoken');
+const LOG = require('./../lib/Logger');
+const LOGGER = new LOG(__filename);
 
-const login = (bmail, bpwd) => {
-    if (bmail && bpwd) {
-        let token = jwt.sign({
-            bmail: bmail
+const login = (req,res,next) => {
+    LOGGER.Log('In login token');
+    res.token = jwt.sign({
+            bmail: req.body.bmail
         }, 'gss', {
             expiresIn: '24h'
-        });
-        return token;
-    } else {
-        return null;
-    }
+    });
+    LOGGER.Log('In login token','Token generated',res.token);
+    next();
 }
 
 const verify = (req, res, next) => {
@@ -20,8 +20,9 @@ const verify = (req, res, next) => {
                 throw new Error('Invalid token');
             }
             if (decoded) {
-                console.log('decoded', decoded);
                 next();
+            }else{
+                throw new Error('Invalid token'); 
             }
         });
     }
