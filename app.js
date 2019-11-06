@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const env = require('dotenv');
 env.config();
 const userRoute = require('./Routes/blogUser');
+const LOG = require('./lib/Logger');
+const LOGGER = new LOG(__filename);
 
 app.set('view engine','pug');
 app.use(logger('dev'));
@@ -21,11 +23,12 @@ app.use(userRoute);
 /*
 *
 * Generic errors and Internal Server Exceptions
-* Currently sends error.pug template
+* Currently sends error messages
 *
 */
 app.use((err,req,res,next)=>{
-    res.render('error',{'error':err.stack});
+    LOGGER.ErrLog('Errors',err.stack);
+    res.json({error:res.error});
 });
 
 /*
@@ -38,6 +41,6 @@ app.get('*',(req,res)=>{
 })
 
 app.listen(process.env.PORT || 3000,()=>{
-    console.log(`listening to ${process.env.PORT || 3000}`);
+    LOGGER.ErrLog(`Server running at ${process.env.PORT || 3000}`);
 });
 
