@@ -9,7 +9,7 @@ const LOGGER = new LOG(__filename);
 
 //token.verify
 //dao.closeClient
-routes.post('/blog/user/register',validate.validateUser,dao.getClient,dao.checkUserExist,dao.addUser,locker.encrypt,dao.addAuth,(req,res)=>{
+routes.post('/barterer/user/register',validate.validateUser,dao.getClient,dao.checkUserExist,dao.addUser,locker.encrypt,dao.addAuth,(req,res)=>{
     LOGGER.Log(`In : ${req.url}`);
     if(res.error){
         throw new Error(`Error in creating user : ${res.error}`);
@@ -17,7 +17,7 @@ routes.post('/blog/user/register',validate.validateUser,dao.getClient,dao.checkU
         res.json({message:'SUCCESS'});
 });
 
-routes.post('/blog/user/login',validate.validateLogin,dao.getClient,dao.checkUserExist,dao.getAuth,locker.authorize,token.login,(req,res)=>{
+routes.post('/barterer/user/login',validate.validateLogin,dao.getClient,dao.checkUserExist,dao.getAuth,locker.authorize,token.login,(req,res)=>{
    LOGGER.Log(`In : ${req.url}`);
    if(res.error){
        throw new Error(`Error is logging in : ${res.error}`);
